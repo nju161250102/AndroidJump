@@ -142,6 +142,10 @@ public class ScreenShot {
 		return Math.sqrt(Math.pow(personX - x, 2) + Math.pow(personY - y, 2));
 	}
 	
+	public BufferedImage getImage() {
+		return image;
+	}
+	
 	private int getRed(int bits) {
 		return (bits & 0x00ff0000) >> 16;
 	}
