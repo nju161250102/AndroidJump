@@ -10,13 +10,13 @@ public class AutoJump extends Thread{
 	}
 
 	public static void test() {
-		File file = new File("E:\\Programs\\AndroidJump\\pic");
+		File file = new File("/pic/");
 		File[] fileList = file.listFiles();
 		for (File f : fileList) {
 			System.out.println(f.getName());
 			try {
 				ScreenShot pic = new ScreenShot(f.getPath());
-				pic.writeFile("E:\\Programs\\AndroidJump\\picout\\"+f.getName());
+				pic.writeFile("/picout/"+f.getName());
 			} catch (NoPersonException e) {
 				e.printStackTrace();
 				break;
