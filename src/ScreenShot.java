@@ -41,6 +41,13 @@ public class ScreenShot {
 		}
 	}
 	
+	public String personPointInfo() {
+		return "人物坐标:X "+personX+"   Y "+personY;
+	}
+	
+	public String nextPointInfo() {
+		return "下一坐标:X "+nextX+"   Y "+nextY;
+	}
 	private void getPersonPoint() throws NoPersonException {
 		int p = 0;
 		for(int j = 0; j < image.getHeight(); j++) {
@@ -142,6 +149,15 @@ public class ScreenShot {
 		return Math.sqrt(Math.pow(personX - x, 2) + Math.pow(personY - y, 2));
 	}
 	
+	public double getLengthByAngle() {
+		try {
+			getNextPoint();
+			return Math.sqrt(Math.pow(personX - nextX, 2) + Math.pow(personY - nextY, 2));
+		} catch (NoNextException e) {
+			e.printStackTrace();
+			return Math.abs(personX - nextX) / Math.cos(Math.PI / 6);
+		}
+	}
 	public BufferedImage getImage() {
 		return image;
 	}
