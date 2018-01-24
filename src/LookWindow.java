@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
@@ -19,6 +20,8 @@ public class LookWindow {
 	private JTextArea label = new JTextArea();
 	private JRadioButton autoButton = new JRadioButton("自动");
 	private JRadioButton midAutoButton = new JRadioButton("半自动");
+	private JToggleButton button;
+	private JScrollPane jsp;
 	private ScreenShot pic;
 	private MyThread task;
 	private boolean isNeedClick = false;
@@ -31,10 +34,10 @@ public class LookWindow {
 		frame.setLayout(null);
 		
 		panel.setBounds(0, 0, 1080, 760);
-		JToggleButton button = new JToggleButton("开始");
+		button = new JToggleButton("开始");
 		button.setBounds(1110, 25, 130, 50);
 		label.setEditable(false);
-		JScrollPane jsp = new JScrollPane(label);
+		jsp = new JScrollPane(label);
 		jsp.setBounds(1080, 150, 280, 350);
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(autoButton);
@@ -138,11 +141,15 @@ public class LookWindow {
 					break;
 				}
 			}
+			button.setSelected(false);
+			button.setText("开始");
 			System.out.println("线程结束");
 		}
 	}
 	
 	private void addText(String s) {
 		label.setText(label.getText() + '\n' + s);
+		JScrollBar jsb = jsp.getVerticalScrollBar();
+		jsb.setValue(jsb.getMaximum());
 	}
 }
