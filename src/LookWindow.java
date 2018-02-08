@@ -105,11 +105,11 @@ public class LookWindow {
 					run.exec("adb shell /system/bin/screencap -p /sdcard/p.png");
 					sleep(1500);
 					run.exec("adb pull /sdcard/p.png E:\\Programs\\AndroidJump\\pic\\"+num+".png");
-					sleep(300);
+					sleep(400);
 					pic = new ScreenShot("E:\\Programs\\AndroidJump\\pic\\"+num+".png");
 					addText(pic.personPointInfo());
 					panel.repaint();
-					time = (int) (pic.getLength()/737*1000);
+					time = calculateTime(pic.getLength());
 					pic.writeFile("E:\\Programs\\AndroidJump\\picout\\"+num+".png");
 					panel.repaint();
 					addText(pic.nextPointInfo());
@@ -123,7 +123,7 @@ public class LookWindow {
 				} catch (NoNextException e) {
 					e.printStackTrace();
 					if(autoButton.isSelected()) {
-						time = (int) (pic.getLengthByAngle()/737*1000);
+						time = calculateTime(pic.getLengthByAngle());
 						pic.writeFile("E:\\Programs\\AndroidJump\\picout\\"+num+".png");
 						panel.repaint();
 						addText(pic.nextPointInfo());
@@ -151,5 +151,11 @@ public class LookWindow {
 		label.setText(label.getText() + '\n' + s);
 		JScrollBar jsb = jsp.getVerticalScrollBar();
 		jsb.setValue(jsb.getMaximum());
+	}
+	
+	private int calculateTime(double length) {
+		double a = 151.44;
+		double b = 609.45;
+		return (int) ((-b+Math.sqrt(b*b+4*a*length))/(2*a)*1000);
 	}
 }
