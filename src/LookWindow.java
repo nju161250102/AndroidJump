@@ -59,20 +59,8 @@ public class LookWindow {
 				if(clickButton.isSelected()) {
 					try {
 						if (pic==null) {
-							Process process = run.exec("adb shell /system/bin/screencap -p /sdcard/p.png");
-					        InputStream input = process.getInputStream();   
-					        BufferedReader reader = new BufferedReader(new InputStreamReader(input));  
-					        String szline;  
-					        while ((szline = reader.readLine())!= null) {     
-					            System.out.println(szline);
-					        }
-					        process = run.exec("adb pull /sdcard/p.png E:\\Programs\\AndroidJump\\pic\\0.png");
-					         input = process.getInputStream();   
-					         reader = new BufferedReader(new InputStreamReader(input));  
-					        while ((szline = reader.readLine())!= null) {     
-					            System.out.println(szline);
-					        }
-					        reader.close();
+							cmd("adb shell /system/bin/screencap -p /sdcard/p.png");
+					        cmd("adb pull /sdcard/p.png E:\\Programs\\AndroidJump\\pic\\0.png");
 							pic = new ScreenShot("E:\\Programs\\AndroidJump\\pic\\0.png");
 							panel.repaint();
 						} else {
@@ -131,7 +119,7 @@ public class LookWindow {
 	}
 	
 	class MyThread extends Thread {
-		private int time = 4500;
+		private int time = 0;
 		@Override
 		public void run() {
 			Runtime run = Runtime.getRuntime();
@@ -140,10 +128,8 @@ public class LookWindow {
 		        	sleep(time);
 		        	System.out.println("序号: "+num);
 		        	addText("序号: "+num);
-					run.exec("adb shell /system/bin/screencap -p /sdcard/p.png");
-					sleep(1500);
-					run.exec("adb pull /sdcard/p.png E:\\Programs\\AndroidJump\\pic\\"+num+".png");
-					sleep(400);
+					cmd("adb shell /system/bin/screencap -p /sdcard/p.png");
+					cmd("adb pull /sdcard/p.png E:\\Programs\\AndroidJump\\pic\\"+num+".png");
 					pic = new ScreenShot("E:\\Programs\\AndroidJump\\pic\\"+num+".png");
 					pic.removeBackground();
 					addText(pic.personPointInfo());
@@ -152,9 +138,9 @@ public class LookWindow {
 					pic.writeFile("E:\\Programs\\AndroidJump\\picout\\"+num+".png");
 					panel.repaint();
 					addText(pic.nextPointInfo());
-					run.exec("adb shell input swipe 500 500 501 501 "+time);
-					time += 4500;
-				} catch (IOException | InterruptedException e) {
+					cmd("adb shell input swipe 500 500 501 501 "+time);
+					time += 450;
+				} catch (InterruptedException e) {
 					e.printStackTrace();
 				} catch (NoPersonException e) {
 					e.printStackTrace();
@@ -166,12 +152,8 @@ public class LookWindow {
 						pic.writeFile("E:\\Programs\\AndroidJump\\picout\\"+num+".png");
 						panel.repaint();
 						addText(pic.nextPointInfo());
-						try {
-							run.exec("adb shell input swipe 500 500 501 501 "+time);
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
-						time += 4500;
+						cmd("adb shell input swipe 500 500 501 501 "+time);
+						time += 450;
 						continue;
 					}
 					JOptionPane.showMessageDialog(null, "请选择中心点");
@@ -195,6 +177,22 @@ public class LookWindow {
 	private int calculateTime(double length) {
 		double a = 151.44;
 		double b = 609.45;
-		return (int) ((-b+Math.sqrt(b*b+4*a*length))/(2*a)*1000);
+		return (int) ((-b+Math.sqrt(b*b+4*a*length))/(2*a)*1000-9);
+	}
+	
+	private void cmd(String command) {
+		try {
+			Runtime run = Runtime.getRuntime();
+			Process process = run.exec(command);
+	        InputStream input = process.getInputStream();   
+	        BufferedReader reader = new BufferedReader(new InputStreamReader(input));  
+	        String szline;  
+	        while ((szline = reader.readLine())!= null) {     
+	            System.out.println(szline);
+	        }
+	        reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
