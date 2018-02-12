@@ -20,7 +20,7 @@ public class ScreenShot {
 	public ScreenShot(String filePath) throws NoPersonException {
 		try {
 			image = ImageIO.read(new File(filePath));
-			removeBackground();
+			//removeBackground();
 			getPersonPoint();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -101,7 +101,7 @@ public class ScreenShot {
 		}
 	}
 	
-	private void removeBackground() {
+	public void removeBackground() {
 		int colorA = image.getRGB(0, 0);
 		//获取底部背景色
 		TreeMap<Integer, Integer> colorMap = new TreeMap<Integer,Integer>();
@@ -162,6 +162,14 @@ public class ScreenShot {
 		return image;
 	}
 	
+	public int getPersonX() {
+		return personX;
+	}
+
+	public int getPersonY() {
+		return personY;
+	}
+
 	private int getRed(int bits) {
 		return (bits & 0x00ff0000) >> 16;
 	}
